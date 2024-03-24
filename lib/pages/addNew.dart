@@ -7,7 +7,7 @@ class AddNewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New'),
+        title: const Text('cc'),
       ),
       body: const Center(
         child: Text('Add New'),
