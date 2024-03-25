@@ -1,10 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart'; // 引入用于分组的包
+
+// 原始记账数据
+final List<Map<String, dynamic>> accountData = [
+  {'date': '2024-03-03', 'item': '买菜', 'description': '在超市购买日常蔬菜', 'amount': -20},
+  {'date': '2024-03-02', 'item': '学习', 'description': '购买在线课程资料费用', 'amount': -20},
+  {'date': '2024-03-01', 'item': '就餐', 'description': '与朋友聚餐消费', 'amount': -300},
+  {'date': '2024-03-01', 'item': '购物', 'description': '购买生活日用品', 'amount': -20},
+];
+
+
+// 图标和描述映射表
+final Map<String, IconData> iconMap = {
+  '买菜': Icons.shopping_cart,
+  '学习': Icons.school,
+  '咖啡': Icons.coffee,
+  '就餐': Icons.local_dining,
+  '交通': Icons.train,
+  '购物': Icons.local_grocery_store,
+  '电影': Icons.movie_filter,
+  '维修': Icons.home_repair_service,
+  '手机费': Icons.phone_android,
+  '其他': Icons.other_houses,
+  // 添加可能存在的其他映射，比如：
+  // '看病': Icons.medical_services,
+  // '鸡蛋': Icons.fastfood, // 或者选择其他更合适的图标
+};
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // 对数据按日期分组
+    final groupedList = groupBy(accountData, (entry) => entry['date']);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // 隐藏返回按钮
@@ -58,8 +88,6 @@ class MyHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // 上部分容器
-              // 上部分容器
-              // 上部分容器
               Row(
                 children: [
                   // 左箭头按钮
@@ -87,7 +115,6 @@ class MyHomePage extends StatelessWidget {
                   const Spacer(),
                 ],
               ),
-
               //中间容器
               Container(
                 width: 328,
@@ -114,7 +141,7 @@ class MyHomePage extends StatelessWidget {
                           height: 30,
                         ),
                         const Text(
-                          '-2000花费',
+                          '-2000支出',
                           style: TextStyle(color: Colors.red),
                         ),
                       ],
@@ -151,19 +178,21 @@ class MyHomePage extends StatelessWidget {
                 ),
               ),
               // 下部分容器
+              // 在 ListView.builder 中使用不同的数据
               Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 height: 400,
-                // 设置一个固定的高度
                 width: 328,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: ListView.builder(
-                  itemCount: 10, // 假设有10天的记账信息
+                  itemCount: groupedList.length,
                   itemBuilder: (context, index) {
+                    final date = groupedList.keys.elementAt(index);
+                    final dayRecords = groupedList[date] as List<Map<String, dynamic>>;
+
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 8.0),
                       padding: const EdgeInsets.all(8.0),
@@ -174,19 +203,49 @@ class MyHomePage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '2024-03-${index + 1}', // 假设日期格式为YYYY-MM-DD
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              date,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          // 假设这里是该日期的记账信息列表
-                          const Text('记账信息1'),
-                          const Text('记账信息2'),
-                          const Text('记账信息3'),
-                          // 以此类推，显示当天的所有记账信息
+                          Wrap(
+                            spacing: 8.0, // 间距
+                            runSpacing: 4.0, // 行间距
+                            children: dayRecords.map((record) {
+                              // 查找对应的图标
+                              final IconData icon = iconMap[record['item'].toLowerCase()] ?? Icons.help;
+
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(icon, size: 35), // 将Image替换成Icon
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(record['description']),
+                                        Text(
+                                          '${record['amount']}',
+                                          style: TextStyle(
+                                            color: record['amount'] < 0
+                                                ? Colors.red
+                                                : Colors.green,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
                         ],
                       ),
                     );
