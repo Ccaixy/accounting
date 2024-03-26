@@ -23,6 +23,8 @@ class AddNewPage extends StatefulWidget {
 class _TransactionsPageState extends State<AddNewPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  get today => DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -63,34 +65,112 @@ class _TransactionsPageState extends State<AddNewPage> with SingleTickerProvider
       body: TabBarView(
         controller: _tabController,
         children: [
+
           GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5, // 根据需求调整列数
-              childAspectRatio: 1 / 1.5, // 根据需求调整宽高比
+              childAspectRatio: 1 / 1, // 根据需求调整宽高比
             ),
             itemCount: iconsAndDescriptions.length,
             itemBuilder: (BuildContext context, int index) {
               final item = iconsAndDescriptions[index];
               return Padding(
-                padding: const EdgeInsets.all(25),// 调整间距
+                padding: const EdgeInsets.all(2),// 调整间距
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(item['icon'], size: 40), // 调整图标大小
+                    Icon(item['icon'], size: 20), // 调整图标大小
                     const SizedBox(height: 1),// 调整间距
-                    Text(item['text'], style: const TextStyle(fontSize: 10),                    ), // 调整字体大小
+                    Text(item['text'], style: const TextStyle(fontSize: 15),                    ), // 调整字体大小
                   ],
                 ),
               );
             },
+
           ),
-          Container(
-            alignment: Alignment.center,
+
+
+          Padding(
             padding: const EdgeInsets.all(16.0),
-            child: const Text('此处将展示收入相关信息', style: TextStyle(fontSize: 18)),
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,// 调整文本对齐方式
+              children: [
+                // 日期输入框
+                //调整输入框宽度
+                const TextField(
+
+                  decoration: InputDecoration(
+                    labelText: '日期',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.datetime,
+                ),
+                const SizedBox(height: 1),
+
+                // 类型
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: '请选择类型',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 1),
+
+
+                // 备注输入框
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: '备注',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: null,
+                ),
+                const SizedBox(height: 1),
+
+                // 金额输入框
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: '请输入金额',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 1),
+
+
+                ElevatedButton(
+                  onPressed: () {
+                    // 添加新数据到数据库
+                    Navigator.pop(context);
+                  },
+                  // 移除const关键字
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Text(
+                    "添加",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
+          // Container(
+          //   alignment: Alignment.center,
+          //   padding: const EdgeInsets.all(16.0),
+          //   child: const Text('此处将展示收入相关信息', style: TextStyle(fontSize: 18)),
+          // ),
+          // 新增用于输入的容器组件
+
+
 
         ],
       ),

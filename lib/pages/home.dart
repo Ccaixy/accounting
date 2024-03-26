@@ -45,7 +45,7 @@ class MyHomePage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Image.asset(
                 'images/home_icon.png', // 替换成您的图片路径
-                width: 85, // 图片宽度
+                width: 70, // 图片宽度
               ),
             ),
             // 中间搜索框
@@ -279,7 +279,7 @@ class MyHomePage extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.report),
-            label: '报道',
+            label: '日程计划',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
