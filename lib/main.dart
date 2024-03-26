@@ -1,3 +1,4 @@
+import 'package:code/pages/calendar.dart';
 import 'package:code/pages/register.dart';
 import 'package:code/pages/login.dart';
 import 'package:code/pages/addNew.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         '/AddNew': (context) => const AddNewPage(), // 定义路由规则'
         '/login': (context) => const LoginPage(), // 定义路由规则'
         '/register': (context) => const RegisterPage(),
+        '/date': (context) => const CalendarPage(),
       },
     );
   }

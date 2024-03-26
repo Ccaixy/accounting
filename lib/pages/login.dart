@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: '邮箱地址'),
+              decoration: const InputDecoration(labelText: '用户名'),
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 16.0),
