@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart'; // 引入用于分组的包
+import 'package:collection/collection.dart';
+
+import 'calendar.dart'; // 引入用于分组的包
 
 // 原始记账数据
 final List<Map<String, dynamic>> accountData = [
@@ -224,7 +226,7 @@ class MyHomePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Icon(icon, size: 35), // 将Image替换成Icon
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   Expanded(
                                     child: Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,7 +294,12 @@ class MyHomePage extends StatelessWidget {
         ],
         currentIndex: 1, // 当前选中项，默认为0
         onTap: (int index) {
-          // 在此处处理导航栏点击事件
+          if (index == 0) { // 如果点击的是日程计划
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CalendarPage()),
+            );
+          }
         },
       ),
     );
